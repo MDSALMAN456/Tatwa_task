@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
+
+
+const localItem = ()=>{
+    let oldItem = localStorage.getItem("ProductInfo");
+    let json = JSON.parse(oldItem)
+    console.log(json)
+    if(json==null){
+        return [];
+    }else{
+        return json;
+    }
+}
 
 const AddProduct=()=>{
+
+    const [item , setItem] = useState(localItem())
     const [data,setData]=useState({
         ProductName:"",
         ProductCategories:"",
@@ -13,22 +27,48 @@ const AddProduct=()=>{
         ProductAvailableTo:""
     });
 
+    const [pic , setPic] = useState("")
+
     const getInput=(event)=>{
         const{name,value}=event.target;
         setData({...data,[name]:value})
         console.log(data.ProductName);
         console.log(data.ProductCategories);
-        // console.log(data.ProductDescription);
-        // console.log(data.ProductSize);
-        // console.log(data.ProductAvailableFrom);
-
+      
     }
     const history=useHistory();
-    const getSubmit=(event)=>{
+
+   
+
+    const imageUpload = (event)=>{
+        //console.log(event.target.files[0])
+        const reader = new FileReader();
+        reader.addEventListener('load',()=>{
+            console.log(reader.result)
+            setPic(reader.result);
+        })
+        reader.readAsDataURL(event.target.files[0])    
+    }
+
+   
+    const getSubmit=async(event)=>{
+        console.log(item)
+        console.log(data)
         event.preventDefault();
-        localStorage.setItem("ProductInfo",JSON.stringify(data));
+        data.productpic = pic;
+        setItem(()=>{
+            return [...item,data]
+        })
+        let newitem = JSON.stringify(item);
+        console.log(newitem)
+        let storeddata = await localStorage.setItem("ProductInfo",JSON.stringify(item));
+        
         history.push("/dashboard/addproduct/submit/details");
     }
+
+    useEffect(()=>{
+        localStorage.setItem("ProductInfo",JSON.stringify(item))
+    },[item])
 
     return (
         <>
@@ -37,6 +77,8 @@ const AddProduct=()=>{
                 <div className="col-md-8 mx-auto mt-4">
                 <form onSubmit={getSubmit}>
                 <input type="text" className="w-100" placeholder="Product Name" name="ProductName" value={data.ProductName} onChange={getInput}/>
+                <label className="mt-3">Product Image</label>
+                <input type="file" className="w-100" name="Productimage" onChange={imageUpload}/>
                 <input type="text" className="w-100 mt-4" placeholder="Product Categories" disabled/>
                 <select className="w-100" name="ProductCategories" value={data.ProductCategories} onChange={getInput}>
                     <option>--Choose the Categories--</option>

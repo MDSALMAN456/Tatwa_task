@@ -5,6 +5,7 @@ import Dashboard from "./Screens/Dashboard";
 import AddProduct from "./Screens/AddProduct";
 import Cancel from "./Screens/Cancel";
 import Details from "./Screens/Details";
+import './index.css';
 
 
 const App=()=>{
