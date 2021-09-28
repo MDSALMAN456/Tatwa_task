@@ -3,14 +3,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+body{
+  background-color: bisque;
+}
 input{
-  height: 30px;
+  height: 28px;
 }
 select{
-  height:30px !important;
+  height:28px !important;
 }
 textarea{
-  height: 150px;
+  height: 120px;
 }
 .Cancel_div{
   height: 100vh;

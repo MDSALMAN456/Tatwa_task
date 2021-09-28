@@ -5,6 +5,7 @@ import Dashboard from "./Screens/Dashboard";
 import AddProduct from "./Screens/AddProduct";
 import Cancel from "./Screens/Cancel";
 import Details from "./Screens/Details";
+import Error from "./Screens/Error";
 import './index.css';
 
 
@@ -15,7 +16,8 @@ const App=()=>{
             <Route exact path="/"  component={Dashboard}/>
             <Route exact path="/addproduct" component={AddProduct}/>
             <Route exact path="/addproduct/cancel" component={Cancel}/>
-            <Route exact path="/dashboard/addproduct/submit/details" component={Details}/>
+            <Route exact path="/addproduct/submit/details" component={Details}/>
+            <Route component={Error}/>
         </Switch>
 
         </>
